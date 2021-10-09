@@ -30,7 +30,7 @@ namespace PrLab2{
         }
         private void btnConsultarAviones_Click(object sender, EventArgs e){
             DataSet dt = new DataSet();
-            dt = obj_cont.query_aviones();
+            dt = obj_cont.query_aviones(this.txtNitAvionBuscar.Text);
             this.dtgvAviones.DataSource = dt;
             this.dtgvAviones.DataMember = "Aviones";
         }

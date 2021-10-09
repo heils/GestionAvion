@@ -55,18 +55,23 @@ namespace PrLab2.Data
                 }
             }
         }
-        public DataSet query_aviones(){
-            try{
+        public DataSet query_aviones(int idEmpresa){
+            try {
                 ora_conn.Open();
                 OracleCommand ora_cmd = new OracleCommand("bd3.quer_aviones", ora_conn);
                 ora_cmd.Parameters.Add("avion_cursor", OracleDbType.RefCursor, ParameterDirection.Output);
+                ora_cmd.Parameters.Add("id_empresa", OracleDbType.Int64, idEmpresa, System.Data.ParameterDirection.Input);
                 ora_cmd.CommandType = CommandType.StoredProcedure;
                 OracleDataAdapter da = new OracleDataAdapter(ora_cmd);
                 DataSet ds = new DataSet();
-                da.Fill(ds,"Aviones");
+                da.Fill(ds, "Aviones");
                 return ds;
-            }finally{
-                if (ora_conn.State == ConnectionState.Open){
+            } catch (Exception e) {
+
+                Console.WriteLine(e);
+                return null;
+            } finally {
+                if (ora_conn.State == ConnectionState.Open) {
                     ora_conn.Close();
                 }
             }

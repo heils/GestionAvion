@@ -64,6 +64,8 @@ namespace PrLab2
             this.btnBorrarAvion = new System.Windows.Forms.Button();
             this.txtBorrarAvion = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtNitAvionBuscar = new System.Windows.Forms.TextBox();
             this.tbControlMain.SuspendLayout();
             this.tbpRegEmp.SuspendLayout();
             this.tbpRegAvion.SuspendLayout();
@@ -314,6 +316,8 @@ namespace PrLab2
             // 
             // tbpConsultarAviones
             // 
+            this.tbpConsultarAviones.Controls.Add(this.txtNitAvionBuscar);
+            this.tbpConsultarAviones.Controls.Add(this.label13);
             this.tbpConsultarAviones.Controls.Add(this.dtgvAviones);
             this.tbpConsultarAviones.Controls.Add(this.label11);
             this.tbpConsultarAviones.Controls.Add(this.btnConsultarAviones);
@@ -326,6 +330,8 @@ namespace PrLab2
             // 
             // dtgvAviones
             // 
+            this.dtgvAviones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dtgvAviones.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
             this.dtgvAviones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvAviones.Location = new System.Drawing.Point(20, 131);
             this.dtgvAviones.Name = "dtgvAviones";
@@ -335,7 +341,7 @@ namespace PrLab2
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(307, 30);
+            this.label11.Location = new System.Drawing.Point(307, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(188, 13);
             this.label11.TabIndex = 11;
@@ -388,6 +394,22 @@ namespace PrLab2
             this.label12.Size = new System.Drawing.Size(162, 13);
             this.label12.TabIndex = 0;
             this.label12.Text = "Digíte el serial del avión a borrar:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(228, 53);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(92, 13);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "Nit de la empresa:";
+            // 
+            // txtNitAvionBuscar
+            // 
+            this.txtNitAvionBuscar.Location = new System.Drawing.Point(326, 50);
+            this.txtNitAvionBuscar.Name = "txtNitAvionBuscar";
+            this.txtNitAvionBuscar.Size = new System.Drawing.Size(155, 20);
+            this.txtNitAvionBuscar.TabIndex = 14;
             // 
             // Form1
             // 
@@ -448,6 +470,8 @@ namespace PrLab2
         private Button btnBorrarAvion;
         private TextBox txtBorrarAvion;
         private Label label12;
+        private TextBox txtNitAvionBuscar;
+        private Label label13;
     }
 }
 

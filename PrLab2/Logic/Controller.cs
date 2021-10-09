@@ -47,10 +47,18 @@ namespace PrLab2.Logic{
                 return "Verifique los valores ingresados";
             }
         }
-        public DataSet query_aviones(){
-            DataSet aviones = new DataSet();
-            aviones = obj_avion.query_aviones();
-            return aviones;
+        public DataSet query_aviones(String idEmpresa){
+            try{
+                
+                int newEmpresa = int.Parse(idEmpresa);
+                DataSet aviones = new DataSet();
+                aviones = obj_avion.query_aviones(newEmpresa);
+                return aviones;
+            }
+            catch (Exception e){
+                return null;
+            }
+           
         }
         public String delete_avion(String serial){
             try{
