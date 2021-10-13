@@ -1,0 +1,110 @@
+--USER CREATION SCRIPT, name:"bd3", password: "a"
+
+DROP USER bd3 CASCADE;
+CREATE USER bd3 IDENTIFIED BY a;
+ALTER USER bd3 DEFAULT TABLESPACE users
+              QUOTA UNLIMITED ON users;
+ALTER USER bd3 TEMPORARY TABLESPACE temp;
+GRANT CREATE SESSION, CREATE VIEW, ALTER SESSION, CREATE SEQUENCE TO bd3;
+GRANT CREATE SYNONYM, CREATE DATABASE LINK, RESOURCE TO bd3;{
+
+--TABLE CREATION
+
+create table EMPRESA
+(
+NIT NUMBER(38,0),
+NOMBRE VARCHAR2(50 BYTE),
+FECHACREACION VARCHAR2(50 BYTE),
+constraint PK_NIT primary key (NIT)
+);
+
+
+create table AVION
+(
+SERIAL NUMBER(38,0),
+MARCA VARCHAR2(50 BYTE),
+TIPOAVION VARCHAR2(50 BYTE) CONSTRAINT TIPOAVION CHECK(TIPOAVION IN('Carga','Comercial','Militar')),
+LONGITUD NUMBER(38,0),
+PAISENSAMBLE VARCHAR2(50 BYTE),
+FECHAENSAMBLE VARCHAR2(50 BYTE),
+IDEMPRESA NUMBER(38,0),
+
+primary key(SERIAL),
+foreign key (IDEMPRESA) REFERENCES EMPRESA(NIT)
+);
+
+--INSERT EMPRESA
+
+insert into EMPRESA VALUES(1 ,'Avianca','05-Dec-19');
+insert into EMPRESA VALUES(2 ,'EasyFly','20-Apr-70');
+insert into EMPRESA VALUES(3 ,'Wingo','12-Aug-81');
+insert into EMPRESA VALUES(4 ,'Latam','09-Oct-88');
+
+--INSERT AVION
+
+insert into AVION VALUES(1234,'Boeing787','Comercial',56.7,'Canada','02-Sep-98',1);
+insert into AVION VALUES(5678,'AirbusA330','Carga',58.82,'Toulouse','21-Mar-94',1);
+insert into AVION VALUES(9101,'AirbusA321','Carga',44.51,'China','11-Jan-93',2);
+insert into AVION VALUES(1213,'F-22 Raptor','Militar',18.92 ,'USA','23-Feb-96',2);
+insert into AVION VALUES(1415,'Sukhoi Su-35','Militar',21.9 ,'Russia','15-Apr-87',3);
+insert into AVION VALUES(1617,'ATR-72','Comercial',27.17 ,'France','27-Jul-88',3);
+insert into AVION VALUES(1819,'McDonnell Douglas MD-80','Carga',45.06,'Italy','13-Oct-89',4);
+insert into AVION VALUES(2021,'Embraer 170','Comercial',29.90,'Mexico','11-Nov-91',4);
+insert into AVION VALUES(2223,'Boeing 777','Carga',40.8,'Mozambique','04-Aug-95',2);
+insert into AVION VALUES(2425,'Airbus A340','Carga',44.6,'Suriname','09-Jul-98',3);
+--PROCEDURES
+-------------------------------------------------------------------------------------
+--REGISTER A NEW EMPRESA PROC
+
+CREATE OR REPLACE PROCEDURE reg_emp (nit_emp EMPRESA.NIT%TYPE, nomb_emp EMPRESA.NOMBRE%TYPE, fecha_emp EMPRESA.FECHACREACION%TYPE)
+
+IS
+
+BEGIN
+    insert into EMPRESA VALUES(nit_emp ,nomb_emp,fecha_emp);
+END;
+
+-------------------------------------------------------------------------------------
+--REGISTER A NEW AVION PROC
+
+CREATE OR REPLACE PROCEDURE reg_avion (avion_serial AVION.SERIAL%TYPE, avion_marca AVION.MARCA%TYPE, 
+avion_tipo AVION.TIPOAVION%TYPE, avion_long AVION.LONGITUD%TYPE, avion_pais AVION.PAISENSAMBLE%TYPE,
+avion_fecha AVION.FECHAENSAMBLE%TYPE, id_empresa EMPRESA.NIT%TYPE)
+
+IS
+
+BEGIN
+    insert into AVION VALUES(avion_serial,avion_marca,avion_tipo,avion_long,avion_pais,avion_fecha,id_empresa);
+END;
+
+-------------------------------------------------------------------------------------
+
+--QUERY AVIONES TABLE
+
+
+create or replace PROCEDURE quer_aviones(avion_cursor in out SYS_REFCURSOR, id_empresa empresa.nit%type)
+IS 
+BEGIN
+    OPEN avion_cursor FOR SELECT * FROM AVION where id_empresa = idempresa;
+END;
+
+-------------------------------------------------------------------------------------
+
+--DELETE AN SPECIFIC AVION
+
+
+create or replace PROCEDURE delet_avion(avion_serial AVION.SERIAL%TYPE)
+IS 
+cont NUMBER;
+BEGIN
+    cont:=0;
+    select count (*) into cont from avion where avion.serial = avion_serial;
+    if cont = 0 then
+        raise_application_error(20001,'No exsite el avión');
+    end if;
+    DELETE FROM AVION WHERE AVION.SERIAL = avion_serial;
+    
+END;
+
+
+-------------------------------------------------------------------------------------
